@@ -49,4 +49,10 @@ http://projects.spring.io/spring-data-rest/
 
 
 
+How to debug Spring Boot application with Eclipse?:
+---------------------------------------------------
+http://stackoverflow.com/questions/24113939/how-to-debug-spring-boot-application-with-eclipse
+http://docs.spring.io/autorepo/docs/spring-boot/1.1.9.RELEASE/maven-plugin/examples/run-debug.html
+http://docs.spring.io/spring-boot/docs/current/maven-plugin/examples/run-debug.html
+
 
