@@ -1,0 +1,110 @@
+DockerHub login/pass: chitsang/ericssonLogin123
+
+Get ip address of a container
+	docker inspect <container id>
+	
+List software installed in ubuntu
+	dpkg --get-selections | grep -v deinstall	
+	
+Remove old 	containers
+	docker ps -a | grep 'weeks ago' | awk '{print $1}' | xargs --no-run-if-empty docker rm
+	
+Remove old images -a	
+	docker images -a| grep "<none>" | awk '{print $3}' | xargs docker rmi
+	
+If can't remove image because 	"Error response from daemon: conflict: unable to delete f7df31bdfbba (cannot be forced) - image has dependent child images"
+Run next command:
+	docker history f50f9524513f 
+It will print history how your image was built (all dependent layers).
+
+Just do docker images (without -a, should pick up the active root) and delete image one by one.
+
+Start a tomcat container:
+	docker run -p 8080:8080 -d --name tomcat chitsang/tomcat:latest
+	
+	Access the log:
+		docker logs tomcat (or containerId)   (with -f option as tail -f)
+		
+	Check the files inside the container (use docker exec)
+		docker exec -it tomcat bash 
+		ls -lrt /usr/local/tomcat/webapps
+		
+Difference between docker run and docker exec
+	So now you can run any command in running container just knowing its ID (or name):
+
+	docker exec <container_id_or_name> echo "Hello from container!"
+	Upd: Note that exec command works only on already running container. 
+	If the container is currently stopped, you need to first run it with the following command:
+
+	docker run -it -d shykes/pybuilder /bin/bash
+	The most important here is the -d option, which stands for detached. 
+	It means that the command you initially provided to the container (/bin/bash) 
+	will be run in background and the container will not stop immediately.		
+		
+With Dockerfile in the project in place, build image from src (pulled from GitHub for example)
+		docker build -t example/docker-node-hello:latest .	(Take ages to complete since many layers are built)
+			
+Run the image:
+		docker run -d -p 8080:8080 example/docker-node-hello:latest			
+		
+Download an image, create a container and run it with option for 
+		1. interact with terminal
+		2. remove container after exit
+		3. volume mapping with host system.
+		docker run --rm -ti --read-only=true -v /mnt/session_data:/data ubuntu:latest /bin/bash
+		
+Create a container and then start it (in separate steps steps)
+		docker create -p 6379:6379 redis:2.8
+		docker ps -a
+		docker start 6b785f78b75e
+		
+To delete all of the containers on your Docker hosts, you can use the following command:
+	$ docker rm $(docker ps -a -q)
+And to delete all the images on your Docker host, this command will get the job done:
+	$ docker rmi $(docker images -q -a)
+Newer versions of the docker ps and docker images commands both support a filter
+argument that can make it easy to fine-tune your delete commands for certain circumstances.
+To remove all containers that exited with a nonzero state, you can use this filter:
+	$ docker rm $(docker ps -a -q --filter 'exited!=0')
+And to remove all untagged images, you can type:
+	$ docker rmi $(docker images -q -f "dangling=true")
+	
+Server information
+	docker info
+
+Container info (including ip address)
+	docker inspect <ContainerId>	
+	
+Start an container from an image, execute a command and quit
+e.g.
+	$ docker run 8d12decc75fe /bin/false
+	$ echo $? (last exit code of the process)
+	1
+	$ docker run 8d12decc75fe /bin/true
+	$ echo $? (last exit code of the process)
+	0
+	$ docker run 8d12decc75fe /bin/cat /etc/passwd
+	
+	docker log 8d12decc75fe
+	
+docker version
+docker info	
+docker stats <containerId>
+docker events
+docker stats <containerId>
+	
+docker run -e ENVIRONMENT=testing -e API_KEY=12345 -i -t awesome_app:version1 /opt/awesome_app/test.sh
+We called docker run, but we did a couple of extra things here, too. We passed a couple
+of environment variables into the container: ENVIRONMENT and API_KEY. These can
+either be new or overrides for the ones Docker already exports for us. We also asked
+for a particular tag; in this case, version1. That will make sure we build on top of the
+correct image even if another build is running simultaneously. Then we override the
+command that our container was configured to start in the Dockerfile’s CMD line.
+Instead, we call our test script, /opt/awesome_app/test.sh.
+A critical point to make here is that docker run will not exit with the exit status of
+the command that was invoked in the container. That means we can’t just look at the
+exit status to see if our tests were successful. One way to handle this is to capture all of
+the output of the test run into a file and then look at the last line of the file to see if it
+resulted in success. Our fictional build system does just that. We write out the output
+from the test suite and our test.sh echoes either “Result: SUCCESS!” or “Result:
+FAILURE!” on the last line to signify if our tests passed.
