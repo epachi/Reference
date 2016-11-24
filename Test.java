@@ -62,12 +62,35 @@ public class Test {
 //		patternString =  "\\bone\\b/ && \\btwo\\b/  && \\bthree\\b";
 //		stringToBeMatched = "one,two,three";
 //		printReport(stringToBeMatched, patternString);
+
 		
 		
 		patternString = "^(?=.*\\b(?i)jack\\b)(?=.*\\b(?i)james\\b)(?=.*\\b(?i)java\\b).*$";
 		stringToBeMatched = "JAMES  	JAVA	jack";
 		printReport(stringToBeMatched, patternString);
-
+		
+		String [] patternStringArray = new String[] {"jack", "james", "java"};
+		patternString = createPatternString(patternStringArray);
+		stringToBeMatched = "JAMES  	JAVA	jack";
+		printReport(stringToBeMatched, patternString);
+		
+		patternString = "^.*$";
+		stringToBeMatched = "JAMES  	dfadf";
+		printReport(stringToBeMatched, patternString);
+		
+		
+	}
+	
+	private static String createPatternString(String [] keywords) {
+		String prefix = "^";
+		String suffix = ".*$";
+		
+		String tempString = prefix;
+		for (int i = 0 ; i < keywords.length ; i++) {
+			tempString = tempString + "(?=.*\\b(?i)" + keywords[i]+ "\\b)";
+		}
+		tempString = tempString + suffix;
+		return tempString;
 		
 	}
 	
