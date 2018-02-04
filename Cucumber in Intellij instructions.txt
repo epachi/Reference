@@ -1,0 +1,58 @@
+1. chrome driver: https://chromedriver.storage.googleapis.com/index.html
+
+2. Intellij --> create Gradle project
+3. Add plugin --> a. Gherkin 
+				  b. Cucumber for Java
+3. Add dependencies in build.gradle
+==============================================================
+buildscript {
+    ext {
+        springBootVersion = '1.5.10.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+
+group 'com.example'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile('org.springframework.boot:spring-boot-starter-web')
+    testCompile('org.springframework.boot:spring-boot-starter-test',
+            'junit:junit:4.12',
+            'info.cukes:cucumber-java8:1.2.4',
+            'info.cukes:cucumber-junit:1.2.4',
+
+				'org.seleniumhq.selenium:selenium-java:3.0.1',
+				'info.cukes:cucumber-picocontainer:1.2.4'
+    )
+}
+==============================================================
+4. create .feature file under java/test/resources
+
+5. High light the step and press ALT-RETURN to generate Step files with all steps
+
+6. Run it and fail. Edit the config file from the drop down box in the combo box at the top 
+	- set the glue to point to the Step definition file 
+	- run again
+	- Code change in the step definition files.
+	
+	
+
+

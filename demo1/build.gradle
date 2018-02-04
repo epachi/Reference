@@ -1,0 +1,38 @@
+buildscript {
+    ext {
+        springBootVersion = '1.5.10.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+
+group 'com.example'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile('org.springframework.boot:spring-boot-starter-web')
+    testCompile('org.springframework.boot:spring-boot-starter-test',
+            'junit:junit:4.12',
+            'info.cukes:cucumber-java8:1.2.4',
+            'info.cukes:cucumber-junit:1.2.4',
+
+				'org.seleniumhq.selenium:selenium-java:3.0.1',
+				'info.cukes:cucumber-picocontainer:1.2.4'
+    )
+}
