@@ -1,9 +1,15 @@
+0. source for Cucumber for Java : https://pragprog.com/titles/srjcuc/source_code
+
 1. chrome driver: https://chromedriver.storage.googleapis.com/index.html
 
 2. Intellij --> create Gradle project
 3. Add plugin --> a. Gherkin 
 				  b. Cucumber for Java
 3. Add dependencies in build.gradle
+==============================================================
+Good demo:
+1. first taste
+2. step_definitions_inside
 ==============================================================
 buildscript {
     ext {
