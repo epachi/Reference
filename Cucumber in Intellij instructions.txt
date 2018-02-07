@@ -1,3 +1,23 @@
+java -cp ".:jars/*" cucumber.api.cli.Main -g step_definitions --dry-run features
+
+Given I have $100 in my account # the context
+When I request $20 # the event(s)
+Then $20 should be dispensed # the outcome(s)
+
+And, But
+Each of the lines in a scenario is known as a step. We can add more steps to
+each Given, When, or Then section of the scenario using the keywords And and
+But:
+Scenario: Attempt withdrawal using stolen card
+Given I have $100 in my account
+But my card is invalid
+When I request $50
+Then my card should not be returned
+And I should be told to contact the bank
+
+
+========================================================
+
 0. source for Cucumber for Java : https://pragprog.com/titles/srjcuc/source_code
 
 1. chrome driver: https://chromedriver.storage.googleapis.com/index.html
